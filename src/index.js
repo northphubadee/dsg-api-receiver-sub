@@ -6,7 +6,7 @@ const app = express()
 
 app.use(bodyParser.json())
 
-app.post(`/peyment`, async (req, res) => {
+app.post(`/payment-notification`, async (req, res) => {
 
   const  iso4217_currency_numeric_code  = req.body.currencyCode
   
@@ -25,11 +25,6 @@ app.post(`/peyment`, async (req, res) => {
 
 })
 
-app.get('/peyments', async (req, res) => {
-  const posts = await prisma.payments()
-  res.json(posts)
-})
-
-app.listen(3000, () =>
-  console.log('Server is running on http://localhost:3000'),
+app.listen(4000, () =>
+  console.log('Server is running on http://localhost:4000'),
 )

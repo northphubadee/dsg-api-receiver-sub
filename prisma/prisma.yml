@@ -1,5 +1,7 @@
 # Specifies the HTTP endpoint of your Prisma API.
-endpoint: 'http://192.168.10.16:4466/receiver/dev'
+#endpoint: 'http://192.168.10.16:4466/receiver/dev'
+endpoint: process.env.PRISMA_ENPOINT || process.env.PRISMA_ENPOINT = 'http://localhost:4466/'
+
 
 # Defines your models, each model is mapped to the database as a table.
 datamodel: datamodel.prisma

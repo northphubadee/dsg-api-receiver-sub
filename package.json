@@ -1,5 +1,5 @@
 {
-  "name": "rest-express",
+  "name": "dsg-graphql-receiver",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
@@ -8,6 +8,7 @@
   "dependencies": {
     "body-parser": "1.18.3",
     "express": "4.16.4",
+    "prisma": "1.26.1",
     "prisma-client-lib": "1.26.4"
   }
 }
