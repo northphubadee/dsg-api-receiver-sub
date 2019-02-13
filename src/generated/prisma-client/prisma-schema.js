@@ -1,545 +1,601 @@
 module.exports = {
-  typeDefs: /* GraphQL */ `
-    type AggregatePost {
-      count: Int!
-    }
-
-    type AggregateUser {
-      count: Int!
-    }
-
-    type BatchPayload {
-      count: Long!
-    }
-
-    scalar DateTime
-
-    scalar Long
-
-    type Mutation {
-      createPost(data: PostCreateInput!): Post!
-      updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
-      updateManyPosts(
-        data: PostUpdateManyMutationInput!
-        where: PostWhereInput
-      ): BatchPayload!
-      upsertPost(
-        where: PostWhereUniqueInput!
-        create: PostCreateInput!
-        update: PostUpdateInput!
-      ): Post!
-      deletePost(where: PostWhereUniqueInput!): Post
-      deleteManyPosts(where: PostWhereInput): BatchPayload!
-      createUser(data: UserCreateInput!): User!
-      updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-      updateManyUsers(
-        data: UserUpdateManyMutationInput!
-        where: UserWhereInput
-      ): BatchPayload!
-      upsertUser(
-        where: UserWhereUniqueInput!
-        create: UserCreateInput!
-        update: UserUpdateInput!
-      ): User!
-      deleteUser(where: UserWhereUniqueInput!): User
-      deleteManyUsers(where: UserWhereInput): BatchPayload!
-    }
-
-    enum MutationType {
-      CREATED
-      UPDATED
-      DELETED
-    }
-
-    interface Node {
-      id: ID!
-    }
-
-    type PageInfo {
-      hasNextPage: Boolean!
-      hasPreviousPage: Boolean!
-      startCursor: String
-      endCursor: String
-    }
-
-    type Post {
-      id: ID!
-      createdAt: DateTime!
-      updatedAt: DateTime!
-      published: Boolean!
-      title: String!
-      content: String
-      author: User!
-    }
-
-    type PostConnection {
-      pageInfo: PageInfo!
-      edges: [PostEdge]!
-      aggregate: AggregatePost!
-    }
-
-    input PostCreateInput {
-      published: Boolean
-      title: String!
-      content: String
-      author: UserCreateOneWithoutPostsInput!
-    }
-
-    input PostCreateManyWithoutAuthorInput {
-      create: [PostCreateWithoutAuthorInput!]
-      connect: [PostWhereUniqueInput!]
-    }
-
-    input PostCreateWithoutAuthorInput {
-      published: Boolean
-      title: String!
-      content: String
-    }
-
-    type PostEdge {
-      node: Post!
-      cursor: String!
-    }
-
-    enum PostOrderByInput {
-      id_ASC
-      id_DESC
-      createdAt_ASC
-      createdAt_DESC
-      updatedAt_ASC
-      updatedAt_DESC
-      published_ASC
-      published_DESC
-      title_ASC
-      title_DESC
-      content_ASC
-      content_DESC
-    }
-
-    type PostPreviousValues {
-      id: ID!
-      createdAt: DateTime!
-      updatedAt: DateTime!
-      published: Boolean!
-      title: String!
-      content: String
-    }
-
-    input PostScalarWhereInput {
-      id: ID
-      id_not: ID
-      id_in: [ID!]
-      id_not_in: [ID!]
-      id_lt: ID
-      id_lte: ID
-      id_gt: ID
-      id_gte: ID
-      id_contains: ID
-      id_not_contains: ID
-      id_starts_with: ID
-      id_not_starts_with: ID
-      id_ends_with: ID
-      id_not_ends_with: ID
-      createdAt: DateTime
-      createdAt_not: DateTime
-      createdAt_in: [DateTime!]
-      createdAt_not_in: [DateTime!]
-      createdAt_lt: DateTime
-      createdAt_lte: DateTime
-      createdAt_gt: DateTime
-      createdAt_gte: DateTime
-      updatedAt: DateTime
-      updatedAt_not: DateTime
-      updatedAt_in: [DateTime!]
-      updatedAt_not_in: [DateTime!]
-      updatedAt_lt: DateTime
-      updatedAt_lte: DateTime
-      updatedAt_gt: DateTime
-      updatedAt_gte: DateTime
-      published: Boolean
-      published_not: Boolean
-      title: String
-      title_not: String
-      title_in: [String!]
-      title_not_in: [String!]
-      title_lt: String
-      title_lte: String
-      title_gt: String
-      title_gte: String
-      title_contains: String
-      title_not_contains: String
-      title_starts_with: String
-      title_not_starts_with: String
-      title_ends_with: String
-      title_not_ends_with: String
-      content: String
-      content_not: String
-      content_in: [String!]
-      content_not_in: [String!]
-      content_lt: String
-      content_lte: String
-      content_gt: String
-      content_gte: String
-      content_contains: String
-      content_not_contains: String
-      content_starts_with: String
-      content_not_starts_with: String
-      content_ends_with: String
-      content_not_ends_with: String
-      AND: [PostScalarWhereInput!]
-      OR: [PostScalarWhereInput!]
-      NOT: [PostScalarWhereInput!]
-    }
-
-    type PostSubscriptionPayload {
-      mutation: MutationType!
-      node: Post
-      updatedFields: [String!]
-      previousValues: PostPreviousValues
-    }
-
-    input PostSubscriptionWhereInput {
-      mutation_in: [MutationType!]
-      updatedFields_contains: String
-      updatedFields_contains_every: [String!]
-      updatedFields_contains_some: [String!]
-      node: PostWhereInput
-      AND: [PostSubscriptionWhereInput!]
-      OR: [PostSubscriptionWhereInput!]
-      NOT: [PostSubscriptionWhereInput!]
-    }
-
-    input PostUpdateInput {
-      published: Boolean
-      title: String
-      content: String
-      author: UserUpdateOneRequiredWithoutPostsInput
-    }
-
-    input PostUpdateManyDataInput {
-      published: Boolean
-      title: String
-      content: String
-    }
-
-    input PostUpdateManyMutationInput {
-      published: Boolean
-      title: String
-      content: String
-    }
-
-    input PostUpdateManyWithoutAuthorInput {
-      create: [PostCreateWithoutAuthorInput!]
-      delete: [PostWhereUniqueInput!]
-      connect: [PostWhereUniqueInput!]
-      disconnect: [PostWhereUniqueInput!]
-      update: [PostUpdateWithWhereUniqueWithoutAuthorInput!]
-      upsert: [PostUpsertWithWhereUniqueWithoutAuthorInput!]
-      deleteMany: [PostScalarWhereInput!]
-      updateMany: [PostUpdateManyWithWhereNestedInput!]
-    }
-
-    input PostUpdateManyWithWhereNestedInput {
-      where: PostScalarWhereInput!
-      data: PostUpdateManyDataInput!
-    }
-
-    input PostUpdateWithoutAuthorDataInput {
-      published: Boolean
-      title: String
-      content: String
-    }
-
-    input PostUpdateWithWhereUniqueWithoutAuthorInput {
-      where: PostWhereUniqueInput!
-      data: PostUpdateWithoutAuthorDataInput!
-    }
-
-    input PostUpsertWithWhereUniqueWithoutAuthorInput {
-      where: PostWhereUniqueInput!
-      update: PostUpdateWithoutAuthorDataInput!
-      create: PostCreateWithoutAuthorInput!
-    }
-
-    input PostWhereInput {
-      id: ID
-      id_not: ID
-      id_in: [ID!]
-      id_not_in: [ID!]
-      id_lt: ID
-      id_lte: ID
-      id_gt: ID
-      id_gte: ID
-      id_contains: ID
-      id_not_contains: ID
-      id_starts_with: ID
-      id_not_starts_with: ID
-      id_ends_with: ID
-      id_not_ends_with: ID
-      createdAt: DateTime
-      createdAt_not: DateTime
-      createdAt_in: [DateTime!]
-      createdAt_not_in: [DateTime!]
-      createdAt_lt: DateTime
-      createdAt_lte: DateTime
-      createdAt_gt: DateTime
-      createdAt_gte: DateTime
-      updatedAt: DateTime
-      updatedAt_not: DateTime
-      updatedAt_in: [DateTime!]
-      updatedAt_not_in: [DateTime!]
-      updatedAt_lt: DateTime
-      updatedAt_lte: DateTime
-      updatedAt_gt: DateTime
-      updatedAt_gte: DateTime
-      published: Boolean
-      published_not: Boolean
-      title: String
-      title_not: String
-      title_in: [String!]
-      title_not_in: [String!]
-      title_lt: String
-      title_lte: String
-      title_gt: String
-      title_gte: String
-      title_contains: String
-      title_not_contains: String
-      title_starts_with: String
-      title_not_starts_with: String
-      title_ends_with: String
-      title_not_ends_with: String
-      content: String
-      content_not: String
-      content_in: [String!]
-      content_not_in: [String!]
-      content_lt: String
-      content_lte: String
-      content_gt: String
-      content_gte: String
-      content_contains: String
-      content_not_contains: String
-      content_starts_with: String
-      content_not_starts_with: String
-      content_ends_with: String
-      content_not_ends_with: String
-      author: UserWhereInput
-      AND: [PostWhereInput!]
-      OR: [PostWhereInput!]
-      NOT: [PostWhereInput!]
-    }
-
-    input PostWhereUniqueInput {
-      id: ID
-    }
-
-    type Query {
-      post(where: PostWhereUniqueInput!): Post
-      posts(
-        where: PostWhereInput
-        orderBy: PostOrderByInput
-        skip: Int
-        after: String
-        before: String
-        first: Int
-        last: Int
-      ): [Post]!
-      postsConnection(
-        where: PostWhereInput
-        orderBy: PostOrderByInput
-        skip: Int
-        after: String
-        before: String
-        first: Int
-        last: Int
-      ): PostConnection!
-      user(where: UserWhereUniqueInput!): User
-      users(
-        where: UserWhereInput
-        orderBy: UserOrderByInput
-        skip: Int
-        after: String
-        before: String
-        first: Int
-        last: Int
-      ): [User]!
-      usersConnection(
-        where: UserWhereInput
-        orderBy: UserOrderByInput
-        skip: Int
-        after: String
-        before: String
-        first: Int
-        last: Int
-      ): UserConnection!
-      node(id: ID!): Node
-    }
-
-    type Subscription {
-      post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
-      user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-    }
-
-    type User {
-      id: ID!
-      email: String!
-      name: String
-      posts(
-        where: PostWhereInput
-        orderBy: PostOrderByInput
-        skip: Int
-        after: String
-        before: String
-        first: Int
-        last: Int
-      ): [Post!]
-    }
-
-    type UserConnection {
-      pageInfo: PageInfo!
-      edges: [UserEdge]!
-      aggregate: AggregateUser!
-    }
-
-    input UserCreateInput {
-      email: String!
-      name: String
-      posts: PostCreateManyWithoutAuthorInput
-    }
-
-    input UserCreateOneWithoutPostsInput {
-      create: UserCreateWithoutPostsInput
-      connect: UserWhereUniqueInput
-    }
-
-    input UserCreateWithoutPostsInput {
-      email: String!
-      name: String
-    }
-
-    type UserEdge {
-      node: User!
-      cursor: String!
-    }
-
-    enum UserOrderByInput {
-      id_ASC
-      id_DESC
-      email_ASC
-      email_DESC
-      name_ASC
-      name_DESC
-      createdAt_ASC
-      createdAt_DESC
-      updatedAt_ASC
-      updatedAt_DESC
-    }
-
-    type UserPreviousValues {
-      id: ID!
-      email: String!
-      name: String
-    }
-
-    type UserSubscriptionPayload {
-      mutation: MutationType!
-      node: User
-      updatedFields: [String!]
-      previousValues: UserPreviousValues
-    }
-
-    input UserSubscriptionWhereInput {
-      mutation_in: [MutationType!]
-      updatedFields_contains: String
-      updatedFields_contains_every: [String!]
-      updatedFields_contains_some: [String!]
-      node: UserWhereInput
-      AND: [UserSubscriptionWhereInput!]
-      OR: [UserSubscriptionWhereInput!]
-      NOT: [UserSubscriptionWhereInput!]
-    }
-
-    input UserUpdateInput {
-      email: String
-      name: String
-      posts: PostUpdateManyWithoutAuthorInput
-    }
-
-    input UserUpdateManyMutationInput {
-      email: String
-      name: String
-    }
-
-    input UserUpdateOneRequiredWithoutPostsInput {
-      create: UserCreateWithoutPostsInput
-      update: UserUpdateWithoutPostsDataInput
-      upsert: UserUpsertWithoutPostsInput
-      connect: UserWhereUniqueInput
-    }
-
-    input UserUpdateWithoutPostsDataInput {
-      email: String
-      name: String
-    }
-
-    input UserUpsertWithoutPostsInput {
-      update: UserUpdateWithoutPostsDataInput!
-      create: UserCreateWithoutPostsInput!
-    }
-
-    input UserWhereInput {
-      id: ID
-      id_not: ID
-      id_in: [ID!]
-      id_not_in: [ID!]
-      id_lt: ID
-      id_lte: ID
-      id_gt: ID
-      id_gte: ID
-      id_contains: ID
-      id_not_contains: ID
-      id_starts_with: ID
-      id_not_starts_with: ID
-      id_ends_with: ID
-      id_not_ends_with: ID
-      email: String
-      email_not: String
-      email_in: [String!]
-      email_not_in: [String!]
-      email_lt: String
-      email_lte: String
-      email_gt: String
-      email_gte: String
-      email_contains: String
-      email_not_contains: String
-      email_starts_with: String
-      email_not_starts_with: String
-      email_ends_with: String
-      email_not_ends_with: String
-      name: String
-      name_not: String
-      name_in: [String!]
-      name_not_in: [String!]
-      name_lt: String
-      name_lte: String
-      name_gt: String
-      name_gte: String
-      name_contains: String
-      name_not_contains: String
-      name_starts_with: String
-      name_not_starts_with: String
-      name_ends_with: String
-      name_not_ends_with: String
-      posts_every: PostWhereInput
-      posts_some: PostWhereInput
-      posts_none: PostWhereInput
-      AND: [UserWhereInput!]
-      OR: [UserWhereInput!]
-      NOT: [UserWhereInput!]
-    }
-
-    input UserWhereUniqueInput {
-      id: ID
-      email: String
-    }
-  `,
+        typeDefs: /* GraphQL */ `type AggregateCurrencyCode {
+  count: Int!
 }
+
+type AggregatePayment {
+  count: Int!
+}
+
+type BatchPayload {
+  count: Long!
+}
+
+type CurrencyCode {
+  id: ID!
+  currency: String!
+  currencyCode: String!
+}
+
+type CurrencyCodeConnection {
+  pageInfo: PageInfo!
+  edges: [CurrencyCodeEdge]!
+  aggregate: AggregateCurrencyCode!
+}
+
+input CurrencyCodeCreateInput {
+  currency: String!
+  currencyCode: String!
+}
+
+type CurrencyCodeEdge {
+  node: CurrencyCode!
+  cursor: String!
+}
+
+enum CurrencyCodeOrderByInput {
+  id_ASC
+  id_DESC
+  currency_ASC
+  currency_DESC
+  currencyCode_ASC
+  currencyCode_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type CurrencyCodePreviousValues {
+  id: ID!
+  currency: String!
+  currencyCode: String!
+}
+
+type CurrencyCodeSubscriptionPayload {
+  mutation: MutationType!
+  node: CurrencyCode
+  updatedFields: [String!]
+  previousValues: CurrencyCodePreviousValues
+}
+
+input CurrencyCodeSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CurrencyCodeWhereInput
+  AND: [CurrencyCodeSubscriptionWhereInput!]
+  OR: [CurrencyCodeSubscriptionWhereInput!]
+  NOT: [CurrencyCodeSubscriptionWhereInput!]
+}
+
+input CurrencyCodeUpdateInput {
+  currency: String
+  currencyCode: String
+}
+
+input CurrencyCodeUpdateManyMutationInput {
+  currency: String
+  currencyCode: String
+}
+
+input CurrencyCodeWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  currency: String
+  currency_not: String
+  currency_in: [String!]
+  currency_not_in: [String!]
+  currency_lt: String
+  currency_lte: String
+  currency_gt: String
+  currency_gte: String
+  currency_contains: String
+  currency_not_contains: String
+  currency_starts_with: String
+  currency_not_starts_with: String
+  currency_ends_with: String
+  currency_not_ends_with: String
+  currencyCode: String
+  currencyCode_not: String
+  currencyCode_in: [String!]
+  currencyCode_not_in: [String!]
+  currencyCode_lt: String
+  currencyCode_lte: String
+  currencyCode_gt: String
+  currencyCode_gte: String
+  currencyCode_contains: String
+  currencyCode_not_contains: String
+  currencyCode_starts_with: String
+  currencyCode_not_starts_with: String
+  currencyCode_ends_with: String
+  currencyCode_not_ends_with: String
+  AND: [CurrencyCodeWhereInput!]
+  OR: [CurrencyCodeWhereInput!]
+  NOT: [CurrencyCodeWhereInput!]
+}
+
+input CurrencyCodeWhereUniqueInput {
+  id: ID
+  currencyCode: String
+}
+
+scalar Long
+
+type Mutation {
+  createCurrencyCode(data: CurrencyCodeCreateInput!): CurrencyCode!
+  updateCurrencyCode(data: CurrencyCodeUpdateInput!, where: CurrencyCodeWhereUniqueInput!): CurrencyCode
+  updateManyCurrencyCodes(data: CurrencyCodeUpdateManyMutationInput!, where: CurrencyCodeWhereInput): BatchPayload!
+  upsertCurrencyCode(where: CurrencyCodeWhereUniqueInput!, create: CurrencyCodeCreateInput!, update: CurrencyCodeUpdateInput!): CurrencyCode!
+  deleteCurrencyCode(where: CurrencyCodeWhereUniqueInput!): CurrencyCode
+  deleteManyCurrencyCodes(where: CurrencyCodeWhereInput): BatchPayload!
+  createPayment(data: PaymentCreateInput!): Payment!
+  updatePayment(data: PaymentUpdateInput!, where: PaymentWhereUniqueInput!): Payment
+  updateManyPayments(data: PaymentUpdateManyMutationInput!, where: PaymentWhereInput): BatchPayload!
+  upsertPayment(where: PaymentWhereUniqueInput!, create: PaymentCreateInput!, update: PaymentUpdateInput!): Payment!
+  deletePayment(where: PaymentWhereUniqueInput!): Payment
+  deleteManyPayments(where: PaymentWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Payment {
+  id: ID!
+  payeeProxyId: String!
+  payeeProxyType: String!
+  payeeAccountNumber: String!
+  payeeName: String!
+  payerProxyId: String!
+  payerProxyType: String!
+  payerAccountNumber: String!
+  payerName: String!
+  sendingBankCode: String!
+  receivingBankCode: String!
+  amount: String!
+  transactionId: String!
+  transactionDateandTime: String!
+  billPaymentRef1: String!
+  billPaymentRef2: String!
+  currencyCode: String!
+}
+
+type PaymentConnection {
+  pageInfo: PageInfo!
+  edges: [PaymentEdge]!
+  aggregate: AggregatePayment!
+}
+
+input PaymentCreateInput {
+  payeeProxyId: String!
+  payeeProxyType: String!
+  payeeAccountNumber: String!
+  payeeName: String!
+  payerProxyId: String!
+  payerProxyType: String!
+  payerAccountNumber: String!
+  payerName: String!
+  sendingBankCode: String!
+  receivingBankCode: String!
+  amount: String!
+  transactionId: String!
+  transactionDateandTime: String!
+  billPaymentRef1: String!
+  billPaymentRef2: String!
+  currencyCode: String!
+}
+
+type PaymentEdge {
+  node: Payment!
+  cursor: String!
+}
+
+enum PaymentOrderByInput {
+  id_ASC
+  id_DESC
+  payeeProxyId_ASC
+  payeeProxyId_DESC
+  payeeProxyType_ASC
+  payeeProxyType_DESC
+  payeeAccountNumber_ASC
+  payeeAccountNumber_DESC
+  payeeName_ASC
+  payeeName_DESC
+  payerProxyId_ASC
+  payerProxyId_DESC
+  payerProxyType_ASC
+  payerProxyType_DESC
+  payerAccountNumber_ASC
+  payerAccountNumber_DESC
+  payerName_ASC
+  payerName_DESC
+  sendingBankCode_ASC
+  sendingBankCode_DESC
+  receivingBankCode_ASC
+  receivingBankCode_DESC
+  amount_ASC
+  amount_DESC
+  transactionId_ASC
+  transactionId_DESC
+  transactionDateandTime_ASC
+  transactionDateandTime_DESC
+  billPaymentRef1_ASC
+  billPaymentRef1_DESC
+  billPaymentRef2_ASC
+  billPaymentRef2_DESC
+  currencyCode_ASC
+  currencyCode_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type PaymentPreviousValues {
+  id: ID!
+  payeeProxyId: String!
+  payeeProxyType: String!
+  payeeAccountNumber: String!
+  payeeName: String!
+  payerProxyId: String!
+  payerProxyType: String!
+  payerAccountNumber: String!
+  payerName: String!
+  sendingBankCode: String!
+  receivingBankCode: String!
+  amount: String!
+  transactionId: String!
+  transactionDateandTime: String!
+  billPaymentRef1: String!
+  billPaymentRef2: String!
+  currencyCode: String!
+}
+
+type PaymentSubscriptionPayload {
+  mutation: MutationType!
+  node: Payment
+  updatedFields: [String!]
+  previousValues: PaymentPreviousValues
+}
+
+input PaymentSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: PaymentWhereInput
+  AND: [PaymentSubscriptionWhereInput!]
+  OR: [PaymentSubscriptionWhereInput!]
+  NOT: [PaymentSubscriptionWhereInput!]
+}
+
+input PaymentUpdateInput {
+  payeeProxyId: String
+  payeeProxyType: String
+  payeeAccountNumber: String
+  payeeName: String
+  payerProxyId: String
+  payerProxyType: String
+  payerAccountNumber: String
+  payerName: String
+  sendingBankCode: String
+  receivingBankCode: String
+  amount: String
+  transactionId: String
+  transactionDateandTime: String
+  billPaymentRef1: String
+  billPaymentRef2: String
+  currencyCode: String
+}
+
+input PaymentUpdateManyMutationInput {
+  payeeProxyId: String
+  payeeProxyType: String
+  payeeAccountNumber: String
+  payeeName: String
+  payerProxyId: String
+  payerProxyType: String
+  payerAccountNumber: String
+  payerName: String
+  sendingBankCode: String
+  receivingBankCode: String
+  amount: String
+  transactionId: String
+  transactionDateandTime: String
+  billPaymentRef1: String
+  billPaymentRef2: String
+  currencyCode: String
+}
+
+input PaymentWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  payeeProxyId: String
+  payeeProxyId_not: String
+  payeeProxyId_in: [String!]
+  payeeProxyId_not_in: [String!]
+  payeeProxyId_lt: String
+  payeeProxyId_lte: String
+  payeeProxyId_gt: String
+  payeeProxyId_gte: String
+  payeeProxyId_contains: String
+  payeeProxyId_not_contains: String
+  payeeProxyId_starts_with: String
+  payeeProxyId_not_starts_with: String
+  payeeProxyId_ends_with: String
+  payeeProxyId_not_ends_with: String
+  payeeProxyType: String
+  payeeProxyType_not: String
+  payeeProxyType_in: [String!]
+  payeeProxyType_not_in: [String!]
+  payeeProxyType_lt: String
+  payeeProxyType_lte: String
+  payeeProxyType_gt: String
+  payeeProxyType_gte: String
+  payeeProxyType_contains: String
+  payeeProxyType_not_contains: String
+  payeeProxyType_starts_with: String
+  payeeProxyType_not_starts_with: String
+  payeeProxyType_ends_with: String
+  payeeProxyType_not_ends_with: String
+  payeeAccountNumber: String
+  payeeAccountNumber_not: String
+  payeeAccountNumber_in: [String!]
+  payeeAccountNumber_not_in: [String!]
+  payeeAccountNumber_lt: String
+  payeeAccountNumber_lte: String
+  payeeAccountNumber_gt: String
+  payeeAccountNumber_gte: String
+  payeeAccountNumber_contains: String
+  payeeAccountNumber_not_contains: String
+  payeeAccountNumber_starts_with: String
+  payeeAccountNumber_not_starts_with: String
+  payeeAccountNumber_ends_with: String
+  payeeAccountNumber_not_ends_with: String
+  payeeName: String
+  payeeName_not: String
+  payeeName_in: [String!]
+  payeeName_not_in: [String!]
+  payeeName_lt: String
+  payeeName_lte: String
+  payeeName_gt: String
+  payeeName_gte: String
+  payeeName_contains: String
+  payeeName_not_contains: String
+  payeeName_starts_with: String
+  payeeName_not_starts_with: String
+  payeeName_ends_with: String
+  payeeName_not_ends_with: String
+  payerProxyId: String
+  payerProxyId_not: String
+  payerProxyId_in: [String!]
+  payerProxyId_not_in: [String!]
+  payerProxyId_lt: String
+  payerProxyId_lte: String
+  payerProxyId_gt: String
+  payerProxyId_gte: String
+  payerProxyId_contains: String
+  payerProxyId_not_contains: String
+  payerProxyId_starts_with: String
+  payerProxyId_not_starts_with: String
+  payerProxyId_ends_with: String
+  payerProxyId_not_ends_with: String
+  payerProxyType: String
+  payerProxyType_not: String
+  payerProxyType_in: [String!]
+  payerProxyType_not_in: [String!]
+  payerProxyType_lt: String
+  payerProxyType_lte: String
+  payerProxyType_gt: String
+  payerProxyType_gte: String
+  payerProxyType_contains: String
+  payerProxyType_not_contains: String
+  payerProxyType_starts_with: String
+  payerProxyType_not_starts_with: String
+  payerProxyType_ends_with: String
+  payerProxyType_not_ends_with: String
+  payerAccountNumber: String
+  payerAccountNumber_not: String
+  payerAccountNumber_in: [String!]
+  payerAccountNumber_not_in: [String!]
+  payerAccountNumber_lt: String
+  payerAccountNumber_lte: String
+  payerAccountNumber_gt: String
+  payerAccountNumber_gte: String
+  payerAccountNumber_contains: String
+  payerAccountNumber_not_contains: String
+  payerAccountNumber_starts_with: String
+  payerAccountNumber_not_starts_with: String
+  payerAccountNumber_ends_with: String
+  payerAccountNumber_not_ends_with: String
+  payerName: String
+  payerName_not: String
+  payerName_in: [String!]
+  payerName_not_in: [String!]
+  payerName_lt: String
+  payerName_lte: String
+  payerName_gt: String
+  payerName_gte: String
+  payerName_contains: String
+  payerName_not_contains: String
+  payerName_starts_with: String
+  payerName_not_starts_with: String
+  payerName_ends_with: String
+  payerName_not_ends_with: String
+  sendingBankCode: String
+  sendingBankCode_not: String
+  sendingBankCode_in: [String!]
+  sendingBankCode_not_in: [String!]
+  sendingBankCode_lt: String
+  sendingBankCode_lte: String
+  sendingBankCode_gt: String
+  sendingBankCode_gte: String
+  sendingBankCode_contains: String
+  sendingBankCode_not_contains: String
+  sendingBankCode_starts_with: String
+  sendingBankCode_not_starts_with: String
+  sendingBankCode_ends_with: String
+  sendingBankCode_not_ends_with: String
+  receivingBankCode: String
+  receivingBankCode_not: String
+  receivingBankCode_in: [String!]
+  receivingBankCode_not_in: [String!]
+  receivingBankCode_lt: String
+  receivingBankCode_lte: String
+  receivingBankCode_gt: String
+  receivingBankCode_gte: String
+  receivingBankCode_contains: String
+  receivingBankCode_not_contains: String
+  receivingBankCode_starts_with: String
+  receivingBankCode_not_starts_with: String
+  receivingBankCode_ends_with: String
+  receivingBankCode_not_ends_with: String
+  amount: String
+  amount_not: String
+  amount_in: [String!]
+  amount_not_in: [String!]
+  amount_lt: String
+  amount_lte: String
+  amount_gt: String
+  amount_gte: String
+  amount_contains: String
+  amount_not_contains: String
+  amount_starts_with: String
+  amount_not_starts_with: String
+  amount_ends_with: String
+  amount_not_ends_with: String
+  transactionId: String
+  transactionId_not: String
+  transactionId_in: [String!]
+  transactionId_not_in: [String!]
+  transactionId_lt: String
+  transactionId_lte: String
+  transactionId_gt: String
+  transactionId_gte: String
+  transactionId_contains: String
+  transactionId_not_contains: String
+  transactionId_starts_with: String
+  transactionId_not_starts_with: String
+  transactionId_ends_with: String
+  transactionId_not_ends_with: String
+  transactionDateandTime: String
+  transactionDateandTime_not: String
+  transactionDateandTime_in: [String!]
+  transactionDateandTime_not_in: [String!]
+  transactionDateandTime_lt: String
+  transactionDateandTime_lte: String
+  transactionDateandTime_gt: String
+  transactionDateandTime_gte: String
+  transactionDateandTime_contains: String
+  transactionDateandTime_not_contains: String
+  transactionDateandTime_starts_with: String
+  transactionDateandTime_not_starts_with: String
+  transactionDateandTime_ends_with: String
+  transactionDateandTime_not_ends_with: String
+  billPaymentRef1: String
+  billPaymentRef1_not: String
+  billPaymentRef1_in: [String!]
+  billPaymentRef1_not_in: [String!]
+  billPaymentRef1_lt: String
+  billPaymentRef1_lte: String
+  billPaymentRef1_gt: String
+  billPaymentRef1_gte: String
+  billPaymentRef1_contains: String
+  billPaymentRef1_not_contains: String
+  billPaymentRef1_starts_with: String
+  billPaymentRef1_not_starts_with: String
+  billPaymentRef1_ends_with: String
+  billPaymentRef1_not_ends_with: String
+  billPaymentRef2: String
+  billPaymentRef2_not: String
+  billPaymentRef2_in: [String!]
+  billPaymentRef2_not_in: [String!]
+  billPaymentRef2_lt: String
+  billPaymentRef2_lte: String
+  billPaymentRef2_gt: String
+  billPaymentRef2_gte: String
+  billPaymentRef2_contains: String
+  billPaymentRef2_not_contains: String
+  billPaymentRef2_starts_with: String
+  billPaymentRef2_not_starts_with: String
+  billPaymentRef2_ends_with: String
+  billPaymentRef2_not_ends_with: String
+  currencyCode: String
+  currencyCode_not: String
+  currencyCode_in: [String!]
+  currencyCode_not_in: [String!]
+  currencyCode_lt: String
+  currencyCode_lte: String
+  currencyCode_gt: String
+  currencyCode_gte: String
+  currencyCode_contains: String
+  currencyCode_not_contains: String
+  currencyCode_starts_with: String
+  currencyCode_not_starts_with: String
+  currencyCode_ends_with: String
+  currencyCode_not_ends_with: String
+  AND: [PaymentWhereInput!]
+  OR: [PaymentWhereInput!]
+  NOT: [PaymentWhereInput!]
+}
+
+input PaymentWhereUniqueInput {
+  id: ID
+}
+
+type Query {
+  currencyCode(where: CurrencyCodeWhereUniqueInput!): CurrencyCode
+  currencyCodes(where: CurrencyCodeWhereInput, orderBy: CurrencyCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CurrencyCode]!
+  currencyCodesConnection(where: CurrencyCodeWhereInput, orderBy: CurrencyCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CurrencyCodeConnection!
+  payment(where: PaymentWhereUniqueInput!): Payment
+  payments(where: PaymentWhereInput, orderBy: PaymentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Payment]!
+  paymentsConnection(where: PaymentWhereInput, orderBy: PaymentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PaymentConnection!
+  node(id: ID!): Node
+}
+
+type Subscription {
+  currencyCode(where: CurrencyCodeSubscriptionWhereInput): CurrencyCodeSubscriptionPayload
+  payment(where: PaymentSubscriptionWhereInput): PaymentSubscriptionPayload
+}
+`
+      }
+    

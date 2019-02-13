@@ -1,16 +1,25 @@
-type User {
-  id: ID! @unique
-  email: String! @unique
-  name: String
-  posts: [Post!]!
+type Payment {
+  id: ID! @id
+  payeeProxyId: String!
+  payeeProxyType: String!
+  payeeAccountNumber: String!
+  payeeName: String!
+  payerProxyId: String!
+  payerProxyType: String!
+  payerAccountNumber: String!
+  payerName: String!
+  sendingBankCode: String!
+  receivingBankCode: String!
+  amount: String!
+  transactionId: String!
+  transactionDateandTime: String!
+  billPaymentRef1: String!
+  billPaymentRef2: String!
+  currencyCode: String!
 }
 
-type Post {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  published: Boolean! @default(value: "false")
-  title: String!
-  content: String
-  author: User!
+type CurrencyCode {
+  id: ID! @id
+  currency: String!
+  currencyCode: String! @unique
 }

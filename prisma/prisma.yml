@@ -1,5 +1,5 @@
 # Specifies the HTTP endpoint of your Prisma API.
-endpoint: ''
+endpoint: 'http://192.168.10.16:4466/receiver/dev'
 
 # Defines your models, each model is mapped to the database as a table.
 datamodel: datamodel.prisma
@@ -15,5 +15,5 @@ hooks:
     - prisma generate
 
 # Seeds initial data into the database by running a script.
-seed:
-  run: node ./prisma/seed.js
+# seed:
+#   run: node ./prisma/seed.js
