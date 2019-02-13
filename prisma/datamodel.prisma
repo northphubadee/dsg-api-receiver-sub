@@ -1,4 +1,4 @@
-type Payment {
+type Payment @db(name: "ds_corp_payment_noti"){
   id: ID! @id
   payeeProxyId: String!
   payeeProxyType: String!
@@ -16,10 +16,11 @@ type Payment {
   billPaymentRef1: String!
   billPaymentRef2: String!
   currencyCode: String!
+  currency: String!
 }
 
-type CurrencyCode {
+type Currency @db(name: "ds_corp_country_codes"){
   id: ID! @id
-  currency: String!
-  currencyCode: String! @unique
+  iso4217_currency_numeric_code: String! @unique
+  iso4217_currency_alphabetic_code: String!
 }

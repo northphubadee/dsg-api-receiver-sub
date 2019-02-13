@@ -14,7 +14,7 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
-  currencyCode: (where?: CurrencyCodeWhereInput) => Promise<boolean>;
+  currency: (where?: CurrencyWhereInput) => Promise<boolean>;
   payment: (where?: PaymentWhereInput) => Promise<boolean>;
 }
 
@@ -37,25 +37,25 @@ export interface Prisma {
    * Queries
    */
 
-  currencyCode: (where: CurrencyCodeWhereUniqueInput) => CurrencyCodePromise;
-  currencyCodes: (args?: {
-    where?: CurrencyCodeWhereInput;
-    orderBy?: CurrencyCodeOrderByInput;
+  currency: (where: CurrencyWhereUniqueInput) => CurrencyPromise;
+  currencies: (args?: {
+    where?: CurrencyWhereInput;
+    orderBy?: CurrencyOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<CurrencyCode>;
-  currencyCodesConnection: (args?: {
-    where?: CurrencyCodeWhereInput;
-    orderBy?: CurrencyCodeOrderByInput;
+  }) => FragmentableArray<Currency>;
+  currenciesConnection: (args?: {
+    where?: CurrencyWhereInput;
+    orderBy?: CurrencyOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => CurrencyCodeConnectionPromise;
+  }) => CurrencyConnectionPromise;
   payment: (where: PaymentWhereUniqueInput) => PaymentPromise;
   payments: (args?: {
     where?: PaymentWhereInput;
@@ -81,26 +81,22 @@ export interface Prisma {
    * Mutations
    */
 
-  createCurrencyCode: (data: CurrencyCodeCreateInput) => CurrencyCodePromise;
-  updateCurrencyCode: (args: {
-    data: CurrencyCodeUpdateInput;
-    where: CurrencyCodeWhereUniqueInput;
-  }) => CurrencyCodePromise;
-  updateManyCurrencyCodes: (args: {
-    data: CurrencyCodeUpdateManyMutationInput;
-    where?: CurrencyCodeWhereInput;
+  createCurrency: (data: CurrencyCreateInput) => CurrencyPromise;
+  updateCurrency: (args: {
+    data: CurrencyUpdateInput;
+    where: CurrencyWhereUniqueInput;
+  }) => CurrencyPromise;
+  updateManyCurrencies: (args: {
+    data: CurrencyUpdateManyMutationInput;
+    where?: CurrencyWhereInput;
   }) => BatchPayloadPromise;
-  upsertCurrencyCode: (args: {
-    where: CurrencyCodeWhereUniqueInput;
-    create: CurrencyCodeCreateInput;
-    update: CurrencyCodeUpdateInput;
-  }) => CurrencyCodePromise;
-  deleteCurrencyCode: (
-    where: CurrencyCodeWhereUniqueInput
-  ) => CurrencyCodePromise;
-  deleteManyCurrencyCodes: (
-    where?: CurrencyCodeWhereInput
-  ) => BatchPayloadPromise;
+  upsertCurrency: (args: {
+    where: CurrencyWhereUniqueInput;
+    create: CurrencyCreateInput;
+    update: CurrencyUpdateInput;
+  }) => CurrencyPromise;
+  deleteCurrency: (where: CurrencyWhereUniqueInput) => CurrencyPromise;
+  deleteManyCurrencies: (where?: CurrencyWhereInput) => BatchPayloadPromise;
   createPayment: (data: PaymentCreateInput) => PaymentPromise;
   updatePayment: (args: {
     data: PaymentUpdateInput;
@@ -126,9 +122,9 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  currencyCode: (
-    where?: CurrencyCodeSubscriptionWhereInput
-  ) => CurrencyCodeSubscriptionPayloadSubscription;
+  currency: (
+    where?: CurrencySubscriptionWhereInput
+  ) => CurrencySubscriptionPayloadSubscription;
   payment: (
     where?: PaymentSubscriptionWhereInput
   ) => PaymentSubscriptionPayloadSubscription;
@@ -142,13 +138,13 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type CurrencyCodeOrderByInput =
+export type CurrencyOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "currency_ASC"
-  | "currency_DESC"
-  | "currencyCode_ASC"
-  | "currencyCode_DESC"
+  | "iso4217_currency_numeric_code_ASC"
+  | "iso4217_currency_numeric_code_DESC"
+  | "iso4217_currency_alphabetic_code_ASC"
+  | "iso4217_currency_alphabetic_code_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -189,6 +185,8 @@ export type PaymentOrderByInput =
   | "billPaymentRef2_DESC"
   | "currencyCode_ASC"
   | "currencyCode_DESC"
+  | "currency_ASC"
+  | "currency_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -213,36 +211,31 @@ export interface PaymentCreateInput {
   billPaymentRef1: String;
   billPaymentRef2: String;
   currencyCode: String;
+  currency: String;
 }
 
-export type CurrencyCodeWhereUniqueInput = AtLeastOne<{
+export type CurrencyWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
-  currencyCode?: String;
+  iso4217_currency_numeric_code?: String;
 }>;
 
-export interface CurrencyCodeUpdateInput {
-  currency?: String;
-  currencyCode?: String;
+export interface CurrencyUpdateInput {
+  iso4217_currency_numeric_code?: String;
+  iso4217_currency_alphabetic_code?: String;
 }
 
-export interface CurrencyCodeSubscriptionWhereInput {
+export interface CurrencySubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
-  node?: CurrencyCodeWhereInput;
-  AND?:
-    | CurrencyCodeSubscriptionWhereInput[]
-    | CurrencyCodeSubscriptionWhereInput;
-  OR?:
-    | CurrencyCodeSubscriptionWhereInput[]
-    | CurrencyCodeSubscriptionWhereInput;
-  NOT?:
-    | CurrencyCodeSubscriptionWhereInput[]
-    | CurrencyCodeSubscriptionWhereInput;
+  node?: CurrencyWhereInput;
+  AND?: CurrencySubscriptionWhereInput[] | CurrencySubscriptionWhereInput;
+  OR?: CurrencySubscriptionWhereInput[] | CurrencySubscriptionWhereInput;
+  NOT?: CurrencySubscriptionWhereInput[] | CurrencySubscriptionWhereInput;
 }
 
-export interface CurrencyCodeWhereInput {
+export interface CurrencyWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -257,37 +250,37 @@ export interface CurrencyCodeWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  currency?: String;
-  currency_not?: String;
-  currency_in?: String[] | String;
-  currency_not_in?: String[] | String;
-  currency_lt?: String;
-  currency_lte?: String;
-  currency_gt?: String;
-  currency_gte?: String;
-  currency_contains?: String;
-  currency_not_contains?: String;
-  currency_starts_with?: String;
-  currency_not_starts_with?: String;
-  currency_ends_with?: String;
-  currency_not_ends_with?: String;
-  currencyCode?: String;
-  currencyCode_not?: String;
-  currencyCode_in?: String[] | String;
-  currencyCode_not_in?: String[] | String;
-  currencyCode_lt?: String;
-  currencyCode_lte?: String;
-  currencyCode_gt?: String;
-  currencyCode_gte?: String;
-  currencyCode_contains?: String;
-  currencyCode_not_contains?: String;
-  currencyCode_starts_with?: String;
-  currencyCode_not_starts_with?: String;
-  currencyCode_ends_with?: String;
-  currencyCode_not_ends_with?: String;
-  AND?: CurrencyCodeWhereInput[] | CurrencyCodeWhereInput;
-  OR?: CurrencyCodeWhereInput[] | CurrencyCodeWhereInput;
-  NOT?: CurrencyCodeWhereInput[] | CurrencyCodeWhereInput;
+  iso4217_currency_numeric_code?: String;
+  iso4217_currency_numeric_code_not?: String;
+  iso4217_currency_numeric_code_in?: String[] | String;
+  iso4217_currency_numeric_code_not_in?: String[] | String;
+  iso4217_currency_numeric_code_lt?: String;
+  iso4217_currency_numeric_code_lte?: String;
+  iso4217_currency_numeric_code_gt?: String;
+  iso4217_currency_numeric_code_gte?: String;
+  iso4217_currency_numeric_code_contains?: String;
+  iso4217_currency_numeric_code_not_contains?: String;
+  iso4217_currency_numeric_code_starts_with?: String;
+  iso4217_currency_numeric_code_not_starts_with?: String;
+  iso4217_currency_numeric_code_ends_with?: String;
+  iso4217_currency_numeric_code_not_ends_with?: String;
+  iso4217_currency_alphabetic_code?: String;
+  iso4217_currency_alphabetic_code_not?: String;
+  iso4217_currency_alphabetic_code_in?: String[] | String;
+  iso4217_currency_alphabetic_code_not_in?: String[] | String;
+  iso4217_currency_alphabetic_code_lt?: String;
+  iso4217_currency_alphabetic_code_lte?: String;
+  iso4217_currency_alphabetic_code_gt?: String;
+  iso4217_currency_alphabetic_code_gte?: String;
+  iso4217_currency_alphabetic_code_contains?: String;
+  iso4217_currency_alphabetic_code_not_contains?: String;
+  iso4217_currency_alphabetic_code_starts_with?: String;
+  iso4217_currency_alphabetic_code_not_starts_with?: String;
+  iso4217_currency_alphabetic_code_ends_with?: String;
+  iso4217_currency_alphabetic_code_not_ends_with?: String;
+  AND?: CurrencyWhereInput[] | CurrencyWhereInput;
+  OR?: CurrencyWhereInput[] | CurrencyWhereInput;
+  NOT?: CurrencyWhereInput[] | CurrencyWhereInput;
 }
 
 export interface PaymentWhereInput {
@@ -529,14 +522,28 @@ export interface PaymentWhereInput {
   currencyCode_not_starts_with?: String;
   currencyCode_ends_with?: String;
   currencyCode_not_ends_with?: String;
+  currency?: String;
+  currency_not?: String;
+  currency_in?: String[] | String;
+  currency_not_in?: String[] | String;
+  currency_lt?: String;
+  currency_lte?: String;
+  currency_gt?: String;
+  currency_gte?: String;
+  currency_contains?: String;
+  currency_not_contains?: String;
+  currency_starts_with?: String;
+  currency_not_starts_with?: String;
+  currency_ends_with?: String;
+  currency_not_ends_with?: String;
   AND?: PaymentWhereInput[] | PaymentWhereInput;
   OR?: PaymentWhereInput[] | PaymentWhereInput;
   NOT?: PaymentWhereInput[] | PaymentWhereInput;
 }
 
-export interface CurrencyCodeCreateInput {
-  currency: String;
-  currencyCode: String;
+export interface CurrencyCreateInput {
+  iso4217_currency_numeric_code: String;
+  iso4217_currency_alphabetic_code: String;
 }
 
 export type PaymentWhereUniqueInput = AtLeastOne<{
@@ -560,11 +567,12 @@ export interface PaymentUpdateManyMutationInput {
   billPaymentRef1?: String;
   billPaymentRef2?: String;
   currencyCode?: String;
+  currency?: String;
 }
 
-export interface CurrencyCodeUpdateManyMutationInput {
-  currency?: String;
-  currencyCode?: String;
+export interface CurrencyUpdateManyMutationInput {
+  iso4217_currency_numeric_code?: String;
+  iso4217_currency_alphabetic_code?: String;
 }
 
 export interface PaymentSubscriptionWhereInput {
@@ -595,6 +603,7 @@ export interface PaymentUpdateInput {
   billPaymentRef1?: String;
   billPaymentRef2?: String;
   currencyCode?: String;
+  currency?: String;
 }
 
 export interface NodeNode {
@@ -659,6 +668,7 @@ export interface PaymentPreviousValues {
   billPaymentRef1: String;
   billPaymentRef2: String;
   currencyCode: String;
+  currency: String;
 }
 
 export interface PaymentPreviousValuesPromise
@@ -681,6 +691,7 @@ export interface PaymentPreviousValuesPromise
   billPaymentRef1: () => Promise<String>;
   billPaymentRef2: () => Promise<String>;
   currencyCode: () => Promise<String>;
+  currency: () => Promise<String>;
 }
 
 export interface PaymentPreviousValuesSubscription
@@ -703,27 +714,28 @@ export interface PaymentPreviousValuesSubscription
   billPaymentRef1: () => Promise<AsyncIterator<String>>;
   billPaymentRef2: () => Promise<AsyncIterator<String>>;
   currencyCode: () => Promise<AsyncIterator<String>>;
+  currency: () => Promise<AsyncIterator<String>>;
 }
 
-export interface CurrencyCodeConnection {
+export interface CurrencyConnection {
   pageInfo: PageInfo;
-  edges: CurrencyCodeEdge[];
+  edges: CurrencyEdge[];
 }
 
-export interface CurrencyCodeConnectionPromise
-  extends Promise<CurrencyCodeConnection>,
+export interface CurrencyConnectionPromise
+  extends Promise<CurrencyConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CurrencyCodeEdge>>() => T;
-  aggregate: <T = AggregateCurrencyCodePromise>() => T;
+  edges: <T = FragmentableArray<CurrencyEdge>>() => T;
+  aggregate: <T = AggregateCurrencyPromise>() => T;
 }
 
-export interface CurrencyCodeConnectionSubscription
-  extends Promise<AsyncIterator<CurrencyCodeConnection>>,
+export interface CurrencyConnectionSubscription
+  extends Promise<AsyncIterator<CurrencyConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CurrencyCodeEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCurrencyCodeSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CurrencyEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCurrencySubscription>() => T;
 }
 
 export interface PaymentConnection {
@@ -747,69 +759,67 @@ export interface PaymentConnectionSubscription
   aggregate: <T = AggregatePaymentSubscription>() => T;
 }
 
-export interface CurrencyCodeSubscriptionPayload {
+export interface CurrencySubscriptionPayload {
   mutation: MutationType;
-  node: CurrencyCode;
+  node: Currency;
   updatedFields: String[];
-  previousValues: CurrencyCodePreviousValues;
+  previousValues: CurrencyPreviousValues;
 }
 
-export interface CurrencyCodeSubscriptionPayloadPromise
-  extends Promise<CurrencyCodeSubscriptionPayload>,
+export interface CurrencySubscriptionPayloadPromise
+  extends Promise<CurrencySubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = CurrencyCodePromise>() => T;
+  node: <T = CurrencyPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = CurrencyCodePreviousValuesPromise>() => T;
+  previousValues: <T = CurrencyPreviousValuesPromise>() => T;
 }
 
-export interface CurrencyCodeSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<CurrencyCodeSubscriptionPayload>>,
+export interface CurrencySubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CurrencySubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = CurrencyCodeSubscription>() => T;
+  node: <T = CurrencySubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = CurrencyCodePreviousValuesSubscription>() => T;
+  previousValues: <T = CurrencyPreviousValuesSubscription>() => T;
 }
 
-export interface CurrencyCode {
+export interface Currency {
   id: ID_Output;
-  currency: String;
-  currencyCode: String;
+  iso4217_currency_numeric_code: String;
+  iso4217_currency_alphabetic_code: String;
 }
 
-export interface CurrencyCodePromise
-  extends Promise<CurrencyCode>,
-    Fragmentable {
+export interface CurrencyPromise extends Promise<Currency>, Fragmentable {
   id: () => Promise<ID_Output>;
-  currency: () => Promise<String>;
-  currencyCode: () => Promise<String>;
+  iso4217_currency_numeric_code: () => Promise<String>;
+  iso4217_currency_alphabetic_code: () => Promise<String>;
 }
 
-export interface CurrencyCodeSubscription
-  extends Promise<AsyncIterator<CurrencyCode>>,
+export interface CurrencySubscription
+  extends Promise<AsyncIterator<Currency>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  currency: () => Promise<AsyncIterator<String>>;
-  currencyCode: () => Promise<AsyncIterator<String>>;
+  iso4217_currency_numeric_code: () => Promise<AsyncIterator<String>>;
+  iso4217_currency_alphabetic_code: () => Promise<AsyncIterator<String>>;
 }
 
-export interface CurrencyCodeEdge {
-  node: CurrencyCode;
+export interface CurrencyEdge {
+  node: Currency;
   cursor: String;
 }
 
-export interface CurrencyCodeEdgePromise
-  extends Promise<CurrencyCodeEdge>,
+export interface CurrencyEdgePromise
+  extends Promise<CurrencyEdge>,
     Fragmentable {
-  node: <T = CurrencyCodePromise>() => T;
+  node: <T = CurrencyPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface CurrencyCodeEdgeSubscription
-  extends Promise<AsyncIterator<CurrencyCodeEdge>>,
+export interface CurrencyEdgeSubscription
+  extends Promise<AsyncIterator<CurrencyEdge>>,
     Fragmentable {
-  node: <T = CurrencyCodeSubscription>() => T;
+  node: <T = CurrencySubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -831,6 +841,7 @@ export interface Payment {
   billPaymentRef1: String;
   billPaymentRef2: String;
   currencyCode: String;
+  currency: String;
 }
 
 export interface PaymentPromise extends Promise<Payment>, Fragmentable {
@@ -851,6 +862,7 @@ export interface PaymentPromise extends Promise<Payment>, Fragmentable {
   billPaymentRef1: () => Promise<String>;
   billPaymentRef2: () => Promise<String>;
   currencyCode: () => Promise<String>;
+  currency: () => Promise<String>;
 }
 
 export interface PaymentSubscription
@@ -873,6 +885,7 @@ export interface PaymentSubscription
   billPaymentRef1: () => Promise<AsyncIterator<String>>;
   billPaymentRef2: () => Promise<AsyncIterator<String>>;
   currencyCode: () => Promise<AsyncIterator<String>>;
+  currency: () => Promise<AsyncIterator<String>>;
 }
 
 export interface AggregatePayment {
@@ -891,26 +904,26 @@ export interface AggregatePaymentSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface CurrencyCodePreviousValues {
+export interface CurrencyPreviousValues {
   id: ID_Output;
-  currency: String;
-  currencyCode: String;
+  iso4217_currency_numeric_code: String;
+  iso4217_currency_alphabetic_code: String;
 }
 
-export interface CurrencyCodePreviousValuesPromise
-  extends Promise<CurrencyCodePreviousValues>,
+export interface CurrencyPreviousValuesPromise
+  extends Promise<CurrencyPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  currency: () => Promise<String>;
-  currencyCode: () => Promise<String>;
+  iso4217_currency_numeric_code: () => Promise<String>;
+  iso4217_currency_alphabetic_code: () => Promise<String>;
 }
 
-export interface CurrencyCodePreviousValuesSubscription
-  extends Promise<AsyncIterator<CurrencyCodePreviousValues>>,
+export interface CurrencyPreviousValuesSubscription
+  extends Promise<AsyncIterator<CurrencyPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  currency: () => Promise<AsyncIterator<String>>;
-  currencyCode: () => Promise<AsyncIterator<String>>;
+  iso4217_currency_numeric_code: () => Promise<AsyncIterator<String>>;
+  iso4217_currency_alphabetic_code: () => Promise<AsyncIterator<String>>;
 }
 
 export interface PaymentSubscriptionPayload {
@@ -954,18 +967,18 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface AggregateCurrencyCode {
+export interface AggregateCurrency {
   count: Int;
 }
 
-export interface AggregateCurrencyCodePromise
-  extends Promise<AggregateCurrencyCode>,
+export interface AggregateCurrencyPromise
+  extends Promise<AggregateCurrency>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateCurrencyCodeSubscription
-  extends Promise<AsyncIterator<AggregateCurrencyCode>>,
+export interface AggregateCurrencySubscription
+  extends Promise<AsyncIterator<AggregateCurrency>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -999,7 +1012,7 @@ export type Boolean = boolean;
 
 export const models: Model[] = [
   {
-    name: "CurrencyCode",
+    name: "Currency",
     embedded: false
   },
   {

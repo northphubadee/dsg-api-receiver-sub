@@ -8,85 +8,27 @@ app.use(bodyParser.json())
 
 app.post(`/peyment`, async (req, res) => {
 
-  // console.log(req.body.currencyCode)
-  // const { currencyCode } = req.body.currencyCode
-  // const currency = await prisma.currencyCode({ currencyCode })
-  // console.log(currency)
+  const  iso4217_currency_numeric_code  = req.body.currencyCode
+  
+  const currency = await prisma.currency({ iso4217_currency_numeric_code })
 
-  // res.json(currencyCode)
+  cur = { "currency":currency.iso4217_currency_alphabetic_code }
+
+  var obj = Object.assign(req.body, cur)
+
   const result = await prisma.createPayment({
-    ...req.body,
+    ...obj,
   })
 
   const data = {"resCode":"00", "resDesc":"success","transactionId": result.transactionId ,"confirmId": result.id }
-  // JSON.parse(yourJsonString)
   res.json(data)
+
 })
 
 app.get('/peyments', async (req, res) => {
   const posts = await prisma.payments()
   res.json(posts)
 })
-
-// app.post(`/user`, async (req, res) => {
-//   const result = await prisma.createUser({
-//     ...req.body,
-//   })
-//   res.json(result)
-// })
-
-// app.post(`/post`, async (req, res) => {
-//   const { title, content, authorEmail } = req.body
-//   const result = await prisma.createPost({
-//     title: title,
-//     content: content,
-//     author: { connect: { email: authorEmail } },
-//   })
-//   res.json(result)
-// })
-
-// app.put('/publish/:id', async (req, res) => {
-//   const { id } = req.params
-//   const post = await prisma.updatePost({
-//     where: { id },
-//     data: { published: true },
-//   })
-//   res.json(post)
-// })
-
-// app.delete(`/post/:id`, async (req, res) => {
-//   const { id } = req.params
-//   const post = await prisma.deletePost({ id })
-//   res.json(post)
-// })
-
-// app.get(`/post/:id`, async (req, res) => {
-//   const { id } = req.params
-//   const post = await prisma.post({ id })
-//   res.json(post)
-// })
-
-// app.get('/feed', async (req, res) => {
-//   const posts = await prisma.posts({ where: { published: true } })
-//   res.json(posts)
-// })
-
-// app.get('/filterPosts', async (req, res) => {
-//   const { searchString } = req.query
-//   const draftPosts = await prisma.posts({
-//     where: {
-//       OR: [
-//         {
-//           title_contains: searchString,
-//         },
-//         {
-//           content_contains: searchString,
-//         },
-//       ],
-//     },
-//   })
-//   res.json(draftPosts)
-// })
 
 app.listen(3000, () =>
   console.log('Server is running on http://localhost:3000'),

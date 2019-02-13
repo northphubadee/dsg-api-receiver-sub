@@ -1,5 +1,5 @@
 module.exports = {
-        typeDefs: /* GraphQL */ `type AggregateCurrencyCode {
+        typeDefs: /* GraphQL */ `type AggregateCurrency {
   count: Int!
 }
 
@@ -11,76 +11,76 @@ type BatchPayload {
   count: Long!
 }
 
-type CurrencyCode {
+type Currency {
   id: ID!
-  currency: String!
-  currencyCode: String!
+  iso4217_currency_numeric_code: String!
+  iso4217_currency_alphabetic_code: String!
 }
 
-type CurrencyCodeConnection {
+type CurrencyConnection {
   pageInfo: PageInfo!
-  edges: [CurrencyCodeEdge]!
-  aggregate: AggregateCurrencyCode!
+  edges: [CurrencyEdge]!
+  aggregate: AggregateCurrency!
 }
 
-input CurrencyCodeCreateInput {
-  currency: String!
-  currencyCode: String!
+input CurrencyCreateInput {
+  iso4217_currency_numeric_code: String!
+  iso4217_currency_alphabetic_code: String!
 }
 
-type CurrencyCodeEdge {
-  node: CurrencyCode!
+type CurrencyEdge {
+  node: Currency!
   cursor: String!
 }
 
-enum CurrencyCodeOrderByInput {
+enum CurrencyOrderByInput {
   id_ASC
   id_DESC
-  currency_ASC
-  currency_DESC
-  currencyCode_ASC
-  currencyCode_DESC
+  iso4217_currency_numeric_code_ASC
+  iso4217_currency_numeric_code_DESC
+  iso4217_currency_alphabetic_code_ASC
+  iso4217_currency_alphabetic_code_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
 }
 
-type CurrencyCodePreviousValues {
+type CurrencyPreviousValues {
   id: ID!
-  currency: String!
-  currencyCode: String!
+  iso4217_currency_numeric_code: String!
+  iso4217_currency_alphabetic_code: String!
 }
 
-type CurrencyCodeSubscriptionPayload {
+type CurrencySubscriptionPayload {
   mutation: MutationType!
-  node: CurrencyCode
+  node: Currency
   updatedFields: [String!]
-  previousValues: CurrencyCodePreviousValues
+  previousValues: CurrencyPreviousValues
 }
 
-input CurrencyCodeSubscriptionWhereInput {
+input CurrencySubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: CurrencyCodeWhereInput
-  AND: [CurrencyCodeSubscriptionWhereInput!]
-  OR: [CurrencyCodeSubscriptionWhereInput!]
-  NOT: [CurrencyCodeSubscriptionWhereInput!]
+  node: CurrencyWhereInput
+  AND: [CurrencySubscriptionWhereInput!]
+  OR: [CurrencySubscriptionWhereInput!]
+  NOT: [CurrencySubscriptionWhereInput!]
 }
 
-input CurrencyCodeUpdateInput {
-  currency: String
-  currencyCode: String
+input CurrencyUpdateInput {
+  iso4217_currency_numeric_code: String
+  iso4217_currency_alphabetic_code: String
 }
 
-input CurrencyCodeUpdateManyMutationInput {
-  currency: String
-  currencyCode: String
+input CurrencyUpdateManyMutationInput {
+  iso4217_currency_numeric_code: String
+  iso4217_currency_alphabetic_code: String
 }
 
-input CurrencyCodeWhereInput {
+input CurrencyWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -95,53 +95,53 @@ input CurrencyCodeWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  currency: String
-  currency_not: String
-  currency_in: [String!]
-  currency_not_in: [String!]
-  currency_lt: String
-  currency_lte: String
-  currency_gt: String
-  currency_gte: String
-  currency_contains: String
-  currency_not_contains: String
-  currency_starts_with: String
-  currency_not_starts_with: String
-  currency_ends_with: String
-  currency_not_ends_with: String
-  currencyCode: String
-  currencyCode_not: String
-  currencyCode_in: [String!]
-  currencyCode_not_in: [String!]
-  currencyCode_lt: String
-  currencyCode_lte: String
-  currencyCode_gt: String
-  currencyCode_gte: String
-  currencyCode_contains: String
-  currencyCode_not_contains: String
-  currencyCode_starts_with: String
-  currencyCode_not_starts_with: String
-  currencyCode_ends_with: String
-  currencyCode_not_ends_with: String
-  AND: [CurrencyCodeWhereInput!]
-  OR: [CurrencyCodeWhereInput!]
-  NOT: [CurrencyCodeWhereInput!]
+  iso4217_currency_numeric_code: String
+  iso4217_currency_numeric_code_not: String
+  iso4217_currency_numeric_code_in: [String!]
+  iso4217_currency_numeric_code_not_in: [String!]
+  iso4217_currency_numeric_code_lt: String
+  iso4217_currency_numeric_code_lte: String
+  iso4217_currency_numeric_code_gt: String
+  iso4217_currency_numeric_code_gte: String
+  iso4217_currency_numeric_code_contains: String
+  iso4217_currency_numeric_code_not_contains: String
+  iso4217_currency_numeric_code_starts_with: String
+  iso4217_currency_numeric_code_not_starts_with: String
+  iso4217_currency_numeric_code_ends_with: String
+  iso4217_currency_numeric_code_not_ends_with: String
+  iso4217_currency_alphabetic_code: String
+  iso4217_currency_alphabetic_code_not: String
+  iso4217_currency_alphabetic_code_in: [String!]
+  iso4217_currency_alphabetic_code_not_in: [String!]
+  iso4217_currency_alphabetic_code_lt: String
+  iso4217_currency_alphabetic_code_lte: String
+  iso4217_currency_alphabetic_code_gt: String
+  iso4217_currency_alphabetic_code_gte: String
+  iso4217_currency_alphabetic_code_contains: String
+  iso4217_currency_alphabetic_code_not_contains: String
+  iso4217_currency_alphabetic_code_starts_with: String
+  iso4217_currency_alphabetic_code_not_starts_with: String
+  iso4217_currency_alphabetic_code_ends_with: String
+  iso4217_currency_alphabetic_code_not_ends_with: String
+  AND: [CurrencyWhereInput!]
+  OR: [CurrencyWhereInput!]
+  NOT: [CurrencyWhereInput!]
 }
 
-input CurrencyCodeWhereUniqueInput {
+input CurrencyWhereUniqueInput {
   id: ID
-  currencyCode: String
+  iso4217_currency_numeric_code: String
 }
 
 scalar Long
 
 type Mutation {
-  createCurrencyCode(data: CurrencyCodeCreateInput!): CurrencyCode!
-  updateCurrencyCode(data: CurrencyCodeUpdateInput!, where: CurrencyCodeWhereUniqueInput!): CurrencyCode
-  updateManyCurrencyCodes(data: CurrencyCodeUpdateManyMutationInput!, where: CurrencyCodeWhereInput): BatchPayload!
-  upsertCurrencyCode(where: CurrencyCodeWhereUniqueInput!, create: CurrencyCodeCreateInput!, update: CurrencyCodeUpdateInput!): CurrencyCode!
-  deleteCurrencyCode(where: CurrencyCodeWhereUniqueInput!): CurrencyCode
-  deleteManyCurrencyCodes(where: CurrencyCodeWhereInput): BatchPayload!
+  createCurrency(data: CurrencyCreateInput!): Currency!
+  updateCurrency(data: CurrencyUpdateInput!, where: CurrencyWhereUniqueInput!): Currency
+  updateManyCurrencies(data: CurrencyUpdateManyMutationInput!, where: CurrencyWhereInput): BatchPayload!
+  upsertCurrency(where: CurrencyWhereUniqueInput!, create: CurrencyCreateInput!, update: CurrencyUpdateInput!): Currency!
+  deleteCurrency(where: CurrencyWhereUniqueInput!): Currency
+  deleteManyCurrencies(where: CurrencyWhereInput): BatchPayload!
   createPayment(data: PaymentCreateInput!): Payment!
   updatePayment(data: PaymentUpdateInput!, where: PaymentWhereUniqueInput!): Payment
   updateManyPayments(data: PaymentUpdateManyMutationInput!, where: PaymentWhereInput): BatchPayload!
@@ -185,6 +185,7 @@ type Payment {
   billPaymentRef1: String!
   billPaymentRef2: String!
   currencyCode: String!
+  currency: String!
 }
 
 type PaymentConnection {
@@ -210,6 +211,7 @@ input PaymentCreateInput {
   billPaymentRef1: String!
   billPaymentRef2: String!
   currencyCode: String!
+  currency: String!
 }
 
 type PaymentEdge {
@@ -252,6 +254,8 @@ enum PaymentOrderByInput {
   billPaymentRef2_DESC
   currencyCode_ASC
   currencyCode_DESC
+  currency_ASC
+  currency_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -276,6 +280,7 @@ type PaymentPreviousValues {
   billPaymentRef1: String!
   billPaymentRef2: String!
   currencyCode: String!
+  currency: String!
 }
 
 type PaymentSubscriptionPayload {
@@ -313,6 +318,7 @@ input PaymentUpdateInput {
   billPaymentRef1: String
   billPaymentRef2: String
   currencyCode: String
+  currency: String
 }
 
 input PaymentUpdateManyMutationInput {
@@ -332,6 +338,7 @@ input PaymentUpdateManyMutationInput {
   billPaymentRef1: String
   billPaymentRef2: String
   currencyCode: String
+  currency: String
 }
 
 input PaymentWhereInput {
@@ -573,6 +580,20 @@ input PaymentWhereInput {
   currencyCode_not_starts_with: String
   currencyCode_ends_with: String
   currencyCode_not_ends_with: String
+  currency: String
+  currency_not: String
+  currency_in: [String!]
+  currency_not_in: [String!]
+  currency_lt: String
+  currency_lte: String
+  currency_gt: String
+  currency_gte: String
+  currency_contains: String
+  currency_not_contains: String
+  currency_starts_with: String
+  currency_not_starts_with: String
+  currency_ends_with: String
+  currency_not_ends_with: String
   AND: [PaymentWhereInput!]
   OR: [PaymentWhereInput!]
   NOT: [PaymentWhereInput!]
@@ -583,9 +604,9 @@ input PaymentWhereUniqueInput {
 }
 
 type Query {
-  currencyCode(where: CurrencyCodeWhereUniqueInput!): CurrencyCode
-  currencyCodes(where: CurrencyCodeWhereInput, orderBy: CurrencyCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CurrencyCode]!
-  currencyCodesConnection(where: CurrencyCodeWhereInput, orderBy: CurrencyCodeOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CurrencyCodeConnection!
+  currency(where: CurrencyWhereUniqueInput!): Currency
+  currencies(where: CurrencyWhereInput, orderBy: CurrencyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Currency]!
+  currenciesConnection(where: CurrencyWhereInput, orderBy: CurrencyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CurrencyConnection!
   payment(where: PaymentWhereUniqueInput!): Payment
   payments(where: PaymentWhereInput, orderBy: PaymentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Payment]!
   paymentsConnection(where: PaymentWhereInput, orderBy: PaymentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PaymentConnection!
@@ -593,7 +614,7 @@ type Query {
 }
 
 type Subscription {
-  currencyCode(where: CurrencyCodeSubscriptionWhereInput): CurrencyCodeSubscriptionPayload
+  currency(where: CurrencySubscriptionWhereInput): CurrencySubscriptionPayload
   payment(where: PaymentSubscriptionWhereInput): PaymentSubscriptionPayload
 }
 `
