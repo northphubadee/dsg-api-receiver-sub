@@ -3,8 +3,8 @@ services:
   dsg-graphql-reciver:
     build:
       context: .
-#    environment:
-#      - PRISMA_ENDPOINT=mongodb://mongo:27017/DSG
+    environment:
+      - PRISMA_ENDPOINT=http://192.168.10.16:4466/receiver/dev
     ports:
       - 4001:4000
     restart: always  
